@@ -29,3 +29,4 @@ class Course:
 
 
 course = Course("Math","Math","Kyle",["jimgalagher@ocdsb.ca","markgregory@gmail.com"])
+accounts = dbRequests.GET("Accounts","Students").get("documents")
