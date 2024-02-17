@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Language game!</h1>
+    <div id="prediction-text"></div>
+
+    <script>
+        // Function to fetch prediction text from Flask server
+        async function fetchPredictionText() {
+            const response = await fetch('/generate_sentence');
+            const data = await response.json();
+            return data.prediction_text;
+        }
+
+        // Function to update HTML with prediction text
+        async function updatePredictionText() {
+            const predictionText = await fetchPredictionText();
+            document.getElementById('prediction-text').innerText = predictionText;
+        }
+
+        // Call updatePredictionText() when the page loads
+        window.onload = updatePredictionText;
+    </script>
+</body>
+</html>
