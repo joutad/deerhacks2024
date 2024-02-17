@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Classroom</title>
+    <style>
+        body {
+            font-family: 'Gill Sans', cursive, sans-serif;
+            background-image: url('static/classroom.jpg'); /* Tree image */
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.8); /* Transparent white background */
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        h1 {
+            color: #228B22; /* Forest green */
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #228B22; /* Forest green */
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #228B22; /* Forest green */
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            background-color: #FFD700; /* Gold */
+            color: #228B22; /* Forest green */
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #FFA500; /* Orange */
+        }
+        .logout-btn {
+            margin-top: 20px;
+        }
+        .logout-btn a {
+            color: #228B22; /* Forest green */
+            text-decoration: none;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Create Classroom</h1>
+        <form action="/create_classroom" method="post">
+            <label for="subject">Subject:</label>
+            <input type="text" name="subject" id="subject" placeholder="Enter subject" required>
+            
+            <label for="students">Students (comma-separated emails):</label>
+            <input type="text" name="students" id="students" placeholder="Enter students' emails">
+            
+            <input type="submit" value="Create Classroom">
+        </form>
+        <div class="logout-btn">
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+</body>
+</html>
