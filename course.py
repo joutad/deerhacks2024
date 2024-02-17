@@ -1,13 +1,6 @@
 import json
-
-import pymongo
-from bson import ObjectId
-
 import dbRequests
-from teacher import Teacher
-from student import Student
-from quiz import Quiz
-import pickle
+
 
 class Course:
     def __init__(self, name, subject, teacher, studentEmails=None):

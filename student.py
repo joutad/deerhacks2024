@@ -20,6 +20,7 @@ class Student(Account):
             "Email": self.email,
             "Password:": self.password,
             "AccountType": self.accountType,
+            "Learning Points": 0,
             "Courses": self.courses,
             "Games Available": self.games
         })
