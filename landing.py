@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for, session, render_template
+from flask import Flask, request, redirect, url_for, session, render_template, jsonify
 from authlib.integrations.flask_client import OAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
@@ -106,6 +106,47 @@ def games():
 def logout():
     logout_user()
     return redirect('/')
+
+# Route for rendering the create classroom page
+@app.route('/create-classroom', methods=['GET'])
+@login_required
+def render_create_classroom():
+    if current_user.role != 'teacher':
+        return jsonify({'error': 'Only teachers can create classrooms'}), 403
+    
+    return render_template('create_classroom.html')
+
+# Route for creating a classroom
+@app.route('/create-classroom', methods=['POST'])
+@login_required
+def create_classroom():
+    if current_user.role != 'teacher':
+        return jsonify({'error': 'Only teachers can create classrooms'}), 403
+    
+    # Extract data from the POST request
+    data = request.json
+    teacher_email = current_user.id
+    subject = data.get('subject')
+    students = data.get('students', [])
+    
+    # Here you would connect to MongoDB and insert the classroom data
+    
+    # For demonstration purposes, let's return the received data
+    return jsonify({
+        'teacher_email': teacher_email,
+        'subject': subject,
+        'students': students
+    })
+
+# Route for rendering the student's classrooms page
+@app.route('/student-classrooms')
+@login_required
+def render_student_classrooms():
+    if current_user.role != 'student':
+        return jsonify({'error': 'Only students can view their classrooms'}), 403
+    
+    # Placeholder: Render student classrooms template
+    return render_template('student_classrooms.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

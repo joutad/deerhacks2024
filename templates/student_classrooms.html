@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
+    <title>Your Classrooms</title>
     <style>
         body {
             font-family: 'Gill Sans', cursive, sans-serif;
-            background-image: url('static/island.jpg'); /* Tree image */
+            background-image: url('static/classroom.jpg'); /* Tree image */
             background-size: cover;
             display: flex;
             align-items: center;
@@ -25,19 +25,16 @@
         h1 {
             color: #228B22; /* Forest green */
         }
-        .welcome {
-            margin-bottom: 20px;
+        .classrooms-list {
+            list-style: none;
+            padding: 0;
         }
-        .dashboard-btn {
-            display: block;
-            margin-bottom: 10px;
-            color: #228B22; /* Forest green */
-            text-decoration: none;
-            font-size: 18px;
-            transition: background-color 0.3s;
-        }
-        .dashboard-btn:hover {
+        .classroom-item {
             background-color: #FFD700; /* Gold */
+            margin: 10px;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
         .logout-btn {
             margin-top: 20px;
@@ -51,14 +48,12 @@
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to the Island Adventure!</h1>
-        <div class="welcome">
-            <p>Hello, {{ current_user.id }}</p>
-        </div>
-        <div class="buttons-container">
-            <a href="/student-classrooms" class="dashboard-btn">My Classrooms</a>
-            <a href="/island" class="dashboard-btn">My Island</a>
-        </div>
+        <h1>Your Classrooms</h1>
+        <ul class="classrooms-list">
+            {% for classroom in classrooms %}
+            <li class="classroom-item">{{ classroom.subject }}</li>
+            {% endfor %}
+        </ul>
         <div class="logout-btn">
             <a href="/logout">Logout</a>
         </div>
