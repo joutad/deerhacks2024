@@ -6,6 +6,7 @@ class Student(Account):
         super().__init__(name, username, email, password)
         self.courses = []
         self.games = []
+        self.accountType = "Student"
         for i in Student.Cache.get("documents"):
             if i.get("Email")==email or i.get("Username")==username:
                 del self
@@ -18,6 +19,7 @@ class Student(Account):
             "Username": self.username,
             "Email": self.email,
             "Password:": self.password,
+            "AccountType": self.accountType,
             "Courses": self.courses,
             "Games Available": self.games
         })

@@ -6,6 +6,7 @@ class Parent(Account):
     def __init__(self, name, username, email, password):
         super().__init__(name, username, email, password)
         self.students = []
+        self.accountType = "Parent"
         for i in Parent.Cache.get("documents"):
             if i.get("Email")==email or i.get("Username")==username:
                 del self
@@ -19,5 +20,6 @@ class Parent(Account):
             "Username": self.username,
             "Email": self.email,
             "Password:": self.password,
+            "AccountType": self.accountType,
             "Children":self.students
         })
