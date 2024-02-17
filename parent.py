@@ -23,3 +23,8 @@ class Parent(Account):
             "AccountType": self.accountType,
             "Children":self.students
         })
+
+    def addChild(self,studentEmail):
+        self.students.append(studentEmail)
+        dbRequests.PATCH("Accounts", "Parents", {"Email": self.email}, {"$set": {"Children": self.students}})
+
