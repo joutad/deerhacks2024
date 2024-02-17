@@ -1,0 +1,5 @@
+- user
+    - teacher
+    - parent
+    - student
+    all 3 can have a medium of communication
