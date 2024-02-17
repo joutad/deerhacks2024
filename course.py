@@ -1,5 +1,8 @@
 import json
 
+import pymongo
+from bson import ObjectId
+
 import dbRequests
 from teacher import Teacher
 from student import Student
@@ -13,20 +16,31 @@ class Course:
         self.name = name
         self.subject = subject
         self.teacher = teacher
+        self.updateTeacher()
         self.students = []
         self.quizzes = []
         self.addStudents(studentEmails)
+
+    def updateTeacher(self):
+        TeacherList =dbRequests.GET("Accounts","Teachers")
+        for i in TeacherList.get("documents"):
+            if i.get("Email") == self.teacher:
+                i.get("Courses").append(self)
+                print(i)
+                print(dbRequests.PATCH("Accounts", "Teacher", {"Email": self.teacher}, {"$set": {"Courses": i.get("Courses")}}))
 
     def addStudents(self,studentEmails):
         accounts = dbRequests.GET("Accounts","Students").get("documents")
         for i in accounts:
             for j in studentEmails:
                 if j == i.get("Email"):
-                    self.students.append(i.get("_id"))
+                    self.students.append(i.get("Email"))
                     i.get("Courses").append(json.dumps(self.__dict__))
+                    id=i.pop("_id")
                     print((i))
-                    dbRequests.PATCH(i.get("_id"),i)
+                    print(dbRequests.PATCH("Accounts","Students",{"Email":i.get("Email")},{"$set": {"Courses": i.get("Courses")}}))
 
 
-course = Course("Math","Math","Kyle",["jimgalagher@ocdsb.ca","markgregory@gmail.com"])
+course = Course("Math","Math","Kyle",["jimgalagher@ocdsb.ca","kylesmith@ocdsb.ca"])
 accounts = dbRequests.GET("Accounts","Students").get("documents")
+print(accounts)
