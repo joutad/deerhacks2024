@@ -1,0 +1,34 @@
+newmtl Stripes 1
+Kd 1.000 1.000 1.000
+d 1.000
+map_Kd stripes_01_df.jpg
+newmtl Wood 1
+Kd 1.000 1.000 1.000
+d 1.000
+map_Kd Wood_003_Color.jpg
+newmtl Berlin 4
+Kd 0.471 0.800 0.263
+d 1.000
+newmtl Berlin 3
+Kd 0.471 0.800 0.263
+d 1.000
+newmtl Berlin 2
+Kd 0.471 0.800 0.263
+d 1.000
+newmtl Berlin 1
+Kd 0.471 0.800 0.263
+d 1.000
+newmtl Berlin
+Kd 0.471 0.800 0.263
+d 1.000
+newmtl Pattern
+Kd 1.000 1.000 1.000
+d 1.000
+map_Kd Substance_graph_output_DF.jpg
+newmtl Sienna
+Kd 1.000 0.894 0.780
+d 1.000
+newmtl Moon
+Kd 1.000 1.000 1.000
+d 1.000
+map_Kd moon_df.jpg
