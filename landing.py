@@ -148,5 +148,10 @@ def render_student_classrooms():
     # Placeholder: Render student classrooms template
     return render_template('student_classrooms.html')
 
+@app.route('/island')
+@login_required
+def render_island():
+    return render_template('island.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
