@@ -26,8 +26,7 @@ class Course:
         for i in TeacherList.get("documents"):
             if i.get("Email") == self.teacher:
                 i.get("Courses").append(json.dumps(self.__dict__))
-                print(i)
-                print(dbRequests.PATCH("Accounts", "Teachers", {"Email": self.teacher}, {"$set": {"Courses": i.get("Courses")}}))
+                dbRequests.PATCH("Accounts", "Teachers", {"Email": self.teacher}, {"$set": {"Courses": i.get("Courses")}})
 
     def addStudents(self,studentEmails):
         accounts = dbRequests.GET("Accounts","Students").get("documents")
@@ -38,8 +37,3 @@ class Course:
                     i.get("Courses").append(json.dumps(self.__dict__))
                     id=i.pop("_id")
                     dbRequests.PATCH("Accounts","Students",{"Email":i.get("Email")},{"$set": {"Courses": i.get("Courses")}})
-
-
-course = Course("Math","Math","kylesmith@ocdsb.ca",["jimgalagher@ocdsb.ca","kylesmith@ocdsb.ca"])
-accounts = dbRequests.GET("Accounts","Students").get("documents")
-print(accounts)
