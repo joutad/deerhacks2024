@@ -76,5 +76,13 @@ def PATCH(database, collection, filter_data, update_data):
         return f"Error: {response.status_code}"
 
 
+def LOGIN(email, password, role):
+    allAccounts = GET("Accounts",role)
+    for i in allAccounts.get("documents"):
+        if i.get("Email")==email and i.get("Password")==password:
+            return True
+    return False
+
+
 
 
