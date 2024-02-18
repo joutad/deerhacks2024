@@ -1,1 +1,4 @@
 dh2024.env
+myenv/*
+languagegame/config.py
+reactfrontend/node_modules/*
