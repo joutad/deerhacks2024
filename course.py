@@ -25,7 +25,7 @@ class Course:
         accounts = dbRequests.GET("Accounts","Students").get("documents")
         for i in accounts:
             for j in studentEmails:
-                if j == i.get("Email"):
+                if j.split("(")[1].split(")")[0] == i.get("Email"):
                     self.students.append(i.get("Email"))
                     i.get("Courses").append(json.dumps(self.__dict__))
                     id=i.pop("_id")

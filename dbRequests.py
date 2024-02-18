@@ -90,3 +90,11 @@ def getUserByKey(key,value,role):
         if i.get(key) ==value:
             return i
     return False
+
+
+def getAllStudents(role):
+    allAccounts = GET("Accounts",role)
+    students=[]
+    for i in allAccounts.get("documents"):
+        students.append(i.get("Name") + " (" + i.get("Email") + ")")
+    return students
