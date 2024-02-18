@@ -84,3 +84,9 @@ def LOGIN(email, password, role):
     return False
 
 
+def getUserByKey(key,value,role):
+    allAccounts = GET("Accounts",role)
+    for i in allAccounts.get("documents"):
+        if i.get(key) ==value:
+            return i
+    return False
