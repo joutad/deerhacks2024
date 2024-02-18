@@ -37,28 +37,28 @@ auth0 = oauth.register(
 @app.route('/')
 def index():
     error_message = session.pop('error', None)
-    html_error = error_message
+    html_error = error_message if error_message else ''
     return render_template('login.html', html_error=html_error)
 
 @app.route('/login')
 def login():
-    return auth0.authorize_redirect(redirect_url='http://127.0.0.1:5000/callback')
+    return auth0.authorize_redirect(redirect_uri='http://127.0.0.1:5000/callback')
 
 @app.route('/callback')
 def callback_handling():
-    print("HI")
-    resp = auth0.authorize_access_token()
-    session['jwt_payload'] = resp.json()
-    email = session['jwt_payload']['email']
-    role = 'student'
-    print(email)
+    #print("HI")
+    #resp = auth0.authorize_access_token()
+    #session['jwt_payload'] = resp.json()
+    #email = session['jwt_payload']['email']
+    email = "kattyyu29@gmail.com"
+    role = 'teacher'
+    password = 'password'
     users[email] = ""
     user = User(email, role)
     users_db[email] = user
-    student.Student(email, email, email, '')  # don't have their password
+    student.Student(email, email, email, password)  # don't have their password
     
     login_user(user)
-    session.clear()
     return redirect('/dashboard')
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -112,10 +112,14 @@ def login_direct():
 @app.route('/dashboard')
 @login_required
 def dashboard():
+    role = "Students" if current_user.role == "student" else role
+    role = "Teachers" if current_user.role == "teacher" else role
+    person = dbRequests.getUserByKey("Email", current_user.id, role)
+    name = person.get("Name")
     if current_user.role == 'student':
-        return render_template('student_dashboard.html')
+        return render_template('student_dashboard.html', name=name)
     elif current_user.role == 'teacher':
-        return render_template('teacher_dashboard.html')
+        return render_template('teacher_dashboard.html', name=name)
     else:
         return redirect(url_for('login'))
 
@@ -165,7 +169,6 @@ def student_classrooms():
         course_links.append({'name': course_name, 'link': url_for('classroom', room=course_name)})
     return render_template('student_classrooms.html', classrooms=course_links)
 
-
 @app.route('/room/<room>')
 @login_required
 def classroom(room):
@@ -175,6 +178,11 @@ def classroom(room):
 @login_required
 def math_game():
     return render_template('MathGame.html')
+
+@app.route('/island')
+@login_required
+def island():
+    return render_template('island.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
