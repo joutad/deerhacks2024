@@ -7,20 +7,42 @@
 </head>
 <body>
     <h1>Language game!</h1>
-    <div id="prediction-text"></div>
+    <form id="prediction-text" action="post"></form>
 
     <script>
         // Function to fetch prediction text from Flask server
         async function fetchPredictionText() {
             const response = await fetch('/generate_sentence');
             const data = await response.json();
+            console.log(data)
             return data.prediction_text;
         }
 
         // Function to update HTML with prediction text
         async function updatePredictionText() {
             const predictionText = await fetchPredictionText();
-            document.getElementById('prediction-text').innerText = predictionText;
+            const predictionDiv = document.getElementById('prediction-text');
+            const words = predictionText.split(' ');
+            predictionDiv.innerHTML = ''; // Clear previous content
+            
+            // console.log("appended!")
+            // Iterate through each word in the prediction
+            words.forEach(word => {
+                // Check if the word is a blank (indicated by *)
+                console.log(word)
+                if (word.includes('_')) {
+                    // Create an input field
+                    const inputField = document.createElement('input');
+                    inputField.type = 'text';
+                    inputField.placeholder = 'Enter ' + word.substring(1, word.length - 1); // Remove * characters
+                    // Append the input field to the prediction div
+                    predictionDiv.appendChild(inputField);
+                    predictionDiv.appendChild(document.createElement('br'));
+                } else {
+                    // Otherwise, just append the word to the prediction div
+                    predictionDiv.appendChild(document.createTextNode(word + ' '));
+                }
+            });
         }
 
         // Call updatePredictionText() when the page loads
