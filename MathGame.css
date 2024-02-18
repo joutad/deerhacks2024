@@ -1,0 +1,119 @@
+* {
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+body {
+  background-color: #80BCBD;
+}
+.container {
+  background-color: #FFFFFF;
+  width: 90%;
+  max-width: 31.25em;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  padding: 5em 3em;
+  border-radius: 0.5em;
+}
+.container h3 {
+  font-size: 1.2em;
+  color: #000000;
+  text-align: center;
+  font-weight: 500;
+  line-height: 1.8em;
+}
+.container #submitButton {
+  font-size: 1.2em;
+  font-weight: 500;
+  display: block;
+  margin: 0 auto;
+  background-color: #80BCBD;
+  border-radius: 0.3em;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #000000;
+  padding: 0.6em 2em;
+}
+#errorMessage {
+  text-align: center;
+  margin-top: 1em;
+  background-color: #F9F7C9;
+  color: #D62F2F;
+  padding: 0.2em 0;
+}
+.container #question {
+  background-color: #AAD9BB;
+  font-size: 2em;
+  font-weight: 600;
+  color: #000000;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1.4em 0 1em 0;
+  padding: 1em 0;
+}
+.container input {
+  font-size: 1em;
+  font-weight: 600;
+  width: 2.35em;
+  color: #000000;
+  text-align: center;
+  padding: 0 0.2em;
+  border: none;
+  background-color: transparent;
+  border-bottom: 0.12em solid #000000;
+  margin: 0 0.25em;
+}
+.container input:focus {
+  border-color: #80BCBD;
+  outline: none;
+}
+/*Hide Number Arrows*/
+.container input[type="number"] {
+  -moz-appearance: textfield;
+}
+.container input[type="number"]::-webkit-outer-spin-button,
+.container input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.controlsContainer {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #80BCBD;
+  height: 100%;
+  width: 100%;
+  top: 0;
+}
+#startButton {
+  font-size: 1.2em;
+  font-weight: 500;
+  background-color: #FFFFFF;
+  color: #000000;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0.8em 1.8em;
+  border-radius: 0.3em;
+}
+#resultMessage {
+  margin-bottom: 1em;
+  font-size: 1.5em;
+  color: #000000;
+}
+#resultMessage span {
+  font-weight: 600;
+}
+
+.hide {
+  display: none;
+}
