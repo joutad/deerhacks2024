@@ -37,20 +37,26 @@ auth0 = oauth.register(
 @app.route('/')
 def index():
     error_message = session.pop('error', None)
-    html_error = f'<div style="color: red; text-align: center; margin-bottom: 20px; margin-top: 10px;">{error_message}</div>' if error_message else ''
+    html_error = error_message
     return render_template('login.html', html_error=html_error)
 
 @app.route('/login')
 def login():
-    return auth0.authorize_redirect(redirect_url='http://localhost:5000/callback')
+    return auth0.authorize_redirect(redirect_url='http://127.0.0.1:5000/callback')
 
 @app.route('/callback')
 def callback_handling():
+    print("HI")
     resp = auth0.authorize_access_token()
     session['jwt_payload'] = resp.json()
     email = session['jwt_payload']['email']
-    role = 'student' if email.startswith('student') else 'teacher'
+    role = 'student'
+    print(email)
+    users[email] = ""
     user = User(email, role)
+    users_db[email] = user
+    student.Student(email, email, email, '')  # don't have their password
+    
     login_user(user)
     session.clear()
     return redirect('/dashboard')
@@ -165,6 +171,10 @@ def student_classrooms():
 def classroom(room):
     return render_template('classroom.html', room=room)
 
+@app.route('/math-games')
+@login_required
+def math_game():
+    return render_template('MathGame.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
