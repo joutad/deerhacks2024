@@ -1,1 +1,3 @@
 dh2024.env
+myenv/*
+languagegame/config.py
