@@ -33,7 +33,9 @@
             margin-bottom: 10px;
             color: #228B22; /* Forest green */
         }
-        input[type="text"] {
+        input[type="text"],
+        input[type="submit"],
+        select {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
@@ -57,6 +59,12 @@
         input[type="submit"]:hover {
             background-color: #FFA500; /* Orange */
         }
+        .checkbox-container {
+            text-align: left; /* Align labels and checkboxes to the left */
+            margin-left: auto; /* Center the container */
+            margin-right: auto; /* Center the container */
+            width: fit-content; /* Adjust width to fit content */
+        }
         .logout-btn {
             margin-top: 20px;
         }
@@ -65,19 +73,37 @@
             text-decoration: none;
             font-size: 16px;
         }
+        .checkbox-container label {
+            display: inline-block;
+            margin-bottom: 10px;
+            color: #228B22; /* Forest green */
+            text-align: left; /* Align the text to the left */
+            width: auto; /* Let the width adjust dynamically based on content */
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Create Classroom</h1>
-        <form action="/create_classroom" method="post">
+        <form action="/create-classroom" method="post">
+            <label for="classname">Classroom Name:</label>
+            <input type="text" name="classname" id="classname" placeholder="Name">
+
             <label for="subject">Subject:</label>
-            <input type="text" name="subject" id="subject" placeholder="Enter subject" required>
-            
-            <label for="students">Students (comma-separated emails):</label>
-            <input type="text" name="students" id="students" placeholder="Enter students' emails">
-            
-            <input type="submit" value="Create Classroom">
+            <select name="subject" id="subject" required>
+                <option value="Math">Math</option>
+                <option value="English">English</option>
+            </select>
+
+            <label for="students">Students:</label> <!-- Move the label here -->
+            <div class="checkbox-container"> <!-- Center the selection -->
+                {% for student in students %}
+                    <input type="checkbox" id="{{ student }}" name="students[]" value="{{ student }}">
+                    <label for="{{ student }}">{{ student }}</label><br>
+                {% endfor %}
+            </div>
+
+            <input type="submit" value="Create Classroom"> <!-- Use input type submit -->
         </form>
         <div class="logout-btn">
             <a href="/logout">Logout</a>
