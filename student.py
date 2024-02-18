@@ -24,3 +24,4 @@ class Student(Account):
             "Courses": self.courses,
             "Games Available": self.games
         })
+    

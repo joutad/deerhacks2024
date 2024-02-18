@@ -2,6 +2,8 @@ from flask import Flask, request, redirect, url_for, session, render_template, j
 from authlib.integrations.flask_client import OAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+import dbRequests, student, teacher, course
+import json
 
 app = Flask(__name__)
 app.secret_key = 'super_secret_key'
@@ -56,17 +58,21 @@ def callback_handling():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
+        name = request.form['name']
         email = request.form['email']
         password = request.form['password']
         role = request.form['role']  # assuming you have a role field in your registration form
-        if email not in users:
-            users[email] = generate_password_hash(password)
-            user = User(email, role)
-            users_db[email] = user
-            return redirect('/')  # Redirect to the login page after successful registration
-        else:
-            session['error'] = 'Email already exists!'
-            return redirect(url_for('register'))
+
+        users[email] = password
+        user = User(email, role)
+        users_db[email] = user
+            
+        if role == 'student':
+            student.Student(name, email, email, password)  # no username
+            return redirect('/')
+        elif role == 'teacher':
+            teacher.Teacher(name, email, email, password)
+            return redirect('/')
     return render_template('register.html')
 
 
@@ -74,6 +80,8 @@ def register():
 def login_direct():
     email = request.form['email']
     password = request.form['password']
+    role = request.form['role']
+    """
     if check_password_hash(users.get(email, ''), password):
         role = 'student' if email.startswith('student') else 'teacher'
         user = User(email, role)
@@ -81,6 +89,16 @@ def login_direct():
             return redirect('/dashboard')
         else:
             return redirect(url_for('login'))
+    else:
+        session['error'] = 'Invalid credentials, please try again!'
+        return redirect('/')
+    """
+    role = "Students" if role == "student" else role
+    role = "Teachers" if role == "teacher" else role
+    if dbRequests.LOGIN(email, password, role):
+        user = User(email, role)
+        if login_user(user):
+            return redirect('/dashboard')
     else:
         session['error'] = 'Invalid credentials, please try again!'
         return redirect('/')
@@ -98,7 +116,6 @@ def dashboard():
 @app.route('/games')
 @login_required
 def games():
-    #
     pass
 
 @app.route('/logout')
@@ -107,46 +124,47 @@ def logout():
     logout_user()
     return redirect('/')
 
-# Route for rendering the create classroom page
-@app.route('/create-classroom', methods=['GET'])
-@login_required
-def render_create_classroom():
-    if current_user.role != 'teacher':
-        return jsonify({'error': 'Only teachers can create classrooms'}), 403
-    
-    return render_template('create_classroom.html')
 
 # Route for creating a classroom
-@app.route('/create-classroom', methods=['POST'])
+@app.route('/create-classroom', methods=['GET', 'POST'])
 @login_required
 def create_classroom():
     if current_user.role != 'teacher':
         return jsonify({'error': 'Only teachers can create classrooms'}), 403
     
-    # Extract data from the POST request
-    data = request.json
-    teacher_email = current_user.id
-    subject = data.get('subject')
-    students = data.get('students', [])
-    
-    # Here you would connect to MongoDB and insert the classroom data
-    
-    # For demonstration purposes, let's return the received data
-    return jsonify({
-        'teacher_email': teacher_email,
-        'subject': subject,
-        'students': students
-    })
+    if request.method == 'POST':
+        classname = request.form['classname']
+        subject = request.form['subject']
+        selected_students = request.form.getlist('students[]')  # Get list of selected students
+        teacher = current_user.id
+        print(classname, subject, selected_students, teacher)
+        course.Course(classname, subject, teacher, selected_students)
+        return redirect('/dashboard') 
+        
+    else:  # GET request
+        students = dbRequests.getAllStudents("Students")
+        return render_template('create_classroom.html', students=students)
+
 
 # Route for rendering the student's classrooms page
 @app.route('/student-classrooms')
 @login_required
-def render_student_classrooms():
-    if current_user.role != 'student':
-        return jsonify({'error': 'Only students can view their classrooms'}), 403
-    
-    # Placeholder: Render student classrooms template
-    return render_template('student_classrooms.html')
+def student_classrooms():
+    student = dbRequests.getUserByKey("Email", current_user.id, "Students")
+    courses = student.get("Courses")
+    course_links = []
+    for course in courses:
+        course_data = json.loads(course)
+        course_name = course_data.get("name")
+        course_links.append({'name': course_name, 'link': url_for('classroom', room=course_name)})
+    return render_template('student_classrooms.html', classrooms=course_links)
+
+
+@app.route('/room/<room>')
+@login_required
+def classroom(room):
+    return render_template('classroom.html', room=room)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

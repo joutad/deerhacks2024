@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Classrooms</title>
+    <title>Classroom</title>
     <style>
         body {
             font-family: 'Gill Sans', cursive, sans-serif;
-            background-image: url('static/classroom.jpg'); /* Classroom image */
+            background-image: url('/static/classroom.jpg'); /* Classroom image */
             background-size: cover;
             display: flex;
             align-items: center;
@@ -21,48 +21,34 @@
             border-radius: 20px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
             text-align: center;
+            /*max-width: 600px;*/ /* Adjust width to your preference */
         }
         h1 {
             color: #228B22; /* Forest green */
+            margin-top: 0;
         }
-        .classrooms-list {
-            list-style: none;
-            padding: 0;
-        }
-        .classroom-item {
-            background-color: #FFD700; /* Gold */
-            margin: 10px;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            cursor: pointer; /* Add cursor pointer */
-        }
-        .classroom-item:hover {
-            background-color: #FFA500; /* Orange on hover */
-        }
-        .logout-btn {
+        .classroom-info {
             margin-top: 20px;
         }
-        .logout-btn a {
+        .back-link {
+            display: block;
+            margin-top: 20px;
             color: #228B22; /* Forest green */
             text-decoration: none;
             font-size: 16px;
+        }
+        .back-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Your Classrooms</h1>
-        <ul class="classrooms-list">
-            {% for classroom in classrooms %}
-            <li class="classroom-item">
-                <a href="{{ classroom.link }}">{{ classroom.name }}</a>
-            </li>
-            {% endfor %}
-        </ul>
-        <div class="logout-btn">
-            <a href="/logout">Logout</a>
+        <h1>Welcome to {{ room }}!</h1>
+        <div class="classroom-info">
+            <!-- Add any additional information about the classroom here -->
         </div>
+        <a class="back-link" href="/student-classrooms">Back to Classrooms</a>
     </div>
 </body>
 </html>
