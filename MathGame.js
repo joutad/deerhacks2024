@@ -14,6 +14,36 @@ document.addEventListener("DOMContentLoaded", function () {
   // Random Value Generator
   const randomValue = (min, max) => Math.floor(Math.random() * (max - min)) + min;
 
+  // Event listener for submitButton
+  submitButton.addEventListener("click", () => {
+    errorMessage.classList.add("hide");
+    let userInput = document.getElementById("inputValue").value;
+
+    // User input is not empty
+    if (userInput) {
+      // User guessed correct answer
+      if (userInput == answerValue) {
+        correctCount++; // Increment correct count
+        stopGame(`<span>Correct</span> Answer!`);
+      }
+      // User inputs operator other than +,-
+      else if (operatorQuestion && !operators.includes(userInput)) {
+        errorMessage.classList.remove("hide");
+        errorMessage.innerHTML = "Please enter + or -";
+      }
+      // If user guessed wrong answer
+      else {
+        // incorrectCount++; // Increment incorrect count
+        stopGame(`Try Again!`);
+      }
+    }
+    // If user input is empty
+    else {
+      errorMessage.classList.remove("hide");
+      errorMessage.innerHTML = "Put an Answer!";
+    }
+  });
+
   const questionGenerator = () => {
     // Two random values between 1 and 10
     let [num1, num2] = [randomValue(1, 10), randomValue(1, 10)];
@@ -29,7 +59,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let solution = eval(`${num1}${randomOperator}${num2}`);
 
     // For placing the input at random position
-  
     let randomVar = randomValue(1, 5);
 
     if (randomVar == 1) {
@@ -46,47 +75,14 @@ document.addEventListener("DOMContentLoaded", function () {
       answerValue = solution;
       questionContainer.innerHTML = `${num1} ${randomOperator} ${num2} = <input type="number" id="inputValue" placeholder="?"\>`;
     }
-
-    // Input Check
-    submitButton.addEventListener("click", () => {
-      errorMessage.classList.add("hide");
-      let userInput = document.getElementById("inputValue").value;
-
-      // User input is not empty
-      if (userInput) {
-        // User guessed correct answer
-        if (userInput == answerValue) {
-          correctCount++; // Increment correct count
-          stopGame(`<span>Correct</span> Answer!`);
-        }
-        // User inputs operator other than +,-
-        else if (operatorQuestion && !operators.includes(userInput)) {
-          errorMessage.classList.remove("hide");
-          errorMessage.innerHTML = "Please enter + or -";
-        }
-        // If user guessed wrong answer
-        else {
-          incorrectCount++; // Increment incorrect count
-          stopGame(`Try Again!`);
-        }
-      }
-      // If user input is empty
-      else {
-        errorMessage.classList.remove("hide");
-        errorMessage.innerHTML = "Put an Answer!";
-      }
-    });
   };
 
   // Start Game
   startButton.addEventListener("click", () => {
     operatorQuestion = false;
     answerValue = "";
-    correctCount = 0;
-    incorrectCount = 0; // Reset incorrect count
     errorMessage.innerHTML = "";
     errorMessage.classList.add("hide");
-
     // Controls and buttons visibility
     controlsContainer.classList.add("hide");
     startButton.classList.add("hide");
