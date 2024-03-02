@@ -1,0 +1,38 @@
+h1.auths-header {
+    /* margin: 0 auto; */
+    color: red;
+}
+
+/* div.auths {
+} */
+
+.auths form {
+    display: block;
+    background-color: rebeccapurple;
+}
+/* .auths .email,.pass label {
+    margin: 0 auto;
+    background-color: yellow;
+}
+.auths div.email,div.pass,button {
+    display: block;
+    margin: 0 auto;
+} */
+.auths {
+    justify-content: center;
+    align-items: center;
+}
+.auths label {
+    display: block;
+    /* margin: 2rem; */
+}
+.auths input {
+    display: block;
+    /* margin: 2rem auto; */
+}
+.auths select {
+    display: block;
+}
+.auths button {
+    display: block;
+}
