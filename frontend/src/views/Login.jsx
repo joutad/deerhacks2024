@@ -1,54 +1,62 @@
-import React, { useState } from 'react'
-import "../styles/auths.css"
-import LoginButton from '../components/LoginButton';
-import LogoutButton from '../components/LogoutButton';
-import Profile from '../components/Profile';
-import { useAuth0 } from '@auth0/auth0-react';
+import { useAuth0 } from '@auth0/auth0-react'
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import CreateUserForm from '../components/CreateUserForm';
 
 const Login = () => {
-    const [emailAddress, setEmailAddress] = useState("");
-    const [password, setPasswword] = useState("");
+    const {isAuthenticated, user} = useAuth0();
+    const [isNewUser, setIsNewUser] = useState(false);
 
-    const { isLoading, error } = useAuth0();
+    useEffect(() => {
+        const checkUserExists = async () => {
+            try {
+                console.log(user?.email);
+                const res = await axios.get(`/api/users?email=${user?.email}`);
+                const doesUserExists = !!res.data.message;
+                setIsNewUser(!doesUserExists);
+                console.log(isNewUser);
+            }
+            catch (error) {
+                setIsNewUser(true);
+                console.log(isNewUser);
+                console.error(error);
+            }
+        }
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        alert(`The email is: ${emailAddress}\nYour password is ${password} :D`)
+        if (isAuthenticated) {
+            checkUserExists();
+        }
+        window.location.href = '/';
+    }, [isAuthenticated, user?.email]);
+
+    const createUser = async (userData) => {
+        try {
+            console.log(userData);
+            const res = await axios.post('/api/users/create', userData);
+            console.log(res.data);
+            alert(`${userData['userType']} ${userData['name']} (${userData['email']}) added successfully!`);
+            setIsNewUser(false);
+        }
+        catch (error) {
+            console.error(error);
+        }
     }
-    
+
     return (
-        <div className='auths'>
-            <h1 className='auths-header'>Login</h1>
-            <form onSubmit={handleSubmit}>
-                {/* Email address */}
-                <div className='email'>
-                    <label htmlFor="emailAdd">Email Address</label>
-                    <input type="email" name="emailAdd" id="emailAdd" value={emailAddress} onChange={(e) => setEmailAddress(e.target.value)}/>
-                </div>
-
-                {/* Password */}
-                <div className='pass'>
-                    <label htmlFor="passwd">Password</label>
-                    <input type="password" name="passwd" id="passwd" value={password} onChange={(e) => setPasswword(e.target.value)}/>
-                </div>
-
-                <button type="submit">Log In</button>
-            </form>
-            <main className='column'>
-                <h1>auth0 login</h1>
-                {error && <p>Authentication Error</p>}
-                {!error && isLoading && <p>Loading userdata...</p>}
-                {!error && !isLoading && (
-                    <>
-                        <LoginButton/>
-                        <LogoutButton/>
-                        <Profile />
-                    </>
-                )}
-                
-            </main>
-        </div>
+        <>
+            {isNewUser ? 
+                    (
+                        <>
+                            <p>New user! Please fill out any incomplete information:</p>
+                            <CreateUserForm values={{email: user?.email, firstName: user?.given_name, lastName: user?.family_name}} onSubmit={createUser}/>
+                        </>
+                    ):
+                    (
+                        <p>Welcome, {user?.given_name}!</p>
+                    )
+            }
+        </>
     )
 }
 
-export default Login
+export default Login;
