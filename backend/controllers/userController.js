@@ -8,7 +8,7 @@ exports.createUser = async (req, res) => {
     
         await user.save();
     
-        res.status(201).json({ message: 'User created successfully' });
+        res.status(201).json({ message: `${userType} ${name} (${email}) created successfully` });
     }
     catch (error) {
         console.error(error);
@@ -21,12 +21,29 @@ exports.getUser = async (req, res) => {
     try {
         const { userId } = req.params;
         const user = await User.findById(userId);
-
         res.status(200).json({ message: user });
     }
     catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server Error: could not find user! '});
+    }
+}
+
+exports.getUserByEmail = async (req, res) => {
+    try {
+        console.log(req.query)
+        const { email } = req.query;
+        const user = await User.findOne({ email });
+        
+        if (!user) {
+            return res.status(404).json({ message: user });
+        }
+
+        res.status(200).json({ message: user });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error: could not find user by email' });
     }
 }
 
@@ -54,7 +71,7 @@ exports.deleteUser = async (req, res) => {
 
         await User.findByIdAndDelete(userId);
 
-        res.status(200).json({ message: 'User deleted successfully!' });
+        res.status(200).json({ message: `${userType} ${name} (${email}) deleted successfully!` });
     }
     catch (error) {
         console.error(error);
