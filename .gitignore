@@ -20,3 +20,4 @@ __pycache__/student.cpython-310.pyc
 __pycache__/teacher.cpython-310.pyc
 backend/node_modules/*
 winenv/*
+backend/curls.txt
