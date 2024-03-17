@@ -2,10 +2,12 @@ import { useAuth0 } from '@auth0/auth0-react'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import CreateUserForm from '../components/CreateUserForm';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const {isAuthenticated, user} = useAuth0();
     const [isNewUser, setIsNewUser] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const checkUserExists = async () => {
@@ -25,8 +27,8 @@ const Login = () => {
 
         if (isAuthenticated) {
             checkUserExists();
+            navigate('/classrooms');
         }
-        window.location.href = '/';
     }, [isAuthenticated, user?.email]);
 
     const createUser = async (userData) => {
