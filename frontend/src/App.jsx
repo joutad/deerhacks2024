@@ -4,6 +4,7 @@ import Home from "./views/Home";
 import Login from "./views/Login";
 import Register from "./views/Register";
 import NoPage from "./views/NoPage";
+import Classrooms from "./components/Classrooms";
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
                     <Route index element={<Home/>}/>
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/register" element={<Register/>}/>
+                    <Route path="/classrooms" element={<Classrooms/>}/>
                     <Route path="*" element={<NoPage />} />
                 </Route>
             </Routes>
