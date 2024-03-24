@@ -1,20 +1,50 @@
 const User = require('../models/User');
+const Student = require('../models/Student');
+const Teacher = require('../models/Teacher');
 
 //Create
 exports.createUser = async (req, res) => {
     try {
-        const { name, email, userType } = req.body;
-        const user = new User({ name, email, userType });
+        const { name, email } = req.body;
+        const user = new User({ name, email });
     
         await user.save();
     
-        res.status(201).json({ message: `${userType} ${name} (${email}) created successfully` });
+        res.status(201).json({ message: `${name} (${email}) created successfully` });
     }
     catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Server Error' });
+        res.status(500).json({ message: `Server Error: ${error}` });
     }
 };
+
+exports.createStudent = async (req, res) => {
+    try {
+        const { name, email } = req.body;
+        const user = new Student({ name, email });
+    
+        await user.save();
+    
+        res.status(201).json({ message: `student ${name} (${email}) created successfully` }); 
+    }
+    catch (error) {
+        console.error(error)
+    }
+}
+
+exports.createTeacher = async (req, res) => {
+    try {
+        const { name, email } = req.body;
+        const user = new Teacher({ name, email });
+    
+        await user.save();
+    
+        res.status(201).json({ message: `teacher ${name} (${email}) created successfully` }); 
+    }
+    catch (error) {
+        console.error(error)
+    }
+}
 
 //Read
 exports.getUser = async (req, res) => {
@@ -51,9 +81,9 @@ exports.getUserByEmail = async (req, res) => {
 exports.updateUser = async (req, res) => {
     try {
         const { userId } = req.params;
-        const { name, email, userType } = req.body;
+        const { name, email } = req.body;
 
-        const updatedUser = await User.findByIdAndUpdate(userId, { name, email, userType }, { new: true });
+        const updatedUser = await User.findByIdAndUpdate(userId, { name, email }, { new: true });
 
         res.status(200).json({ message: `User ${updatedUser.email} updated successfully`, user: updatedUser });
     }
@@ -67,11 +97,11 @@ exports.updateUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
     try {
         const { userId } = req.params;
-        const { name, email, userType } = req.body;
+        const { name, email } = req.body;
 
         await User.findByIdAndDelete(userId);
 
-        res.status(200).json({ message: `${userType} ${name} (${email}) deleted successfully!` });
+        res.status(200).json({ message: `${name} (${email}) deleted successfully!` });
     }
     catch (error) {
         console.error(error);
