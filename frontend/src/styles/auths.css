@@ -36,3 +36,7 @@ h1.auths-header {
 .auths button {
     display: block;
 }
+
+.authBtn:hover {
+    background-color: red;
+}

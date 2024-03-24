@@ -8,7 +8,7 @@ const AddUser = () => {
     const createUser = async (userData) => {
         try {
             console.log(userData);
-            const res = await axios.post('/api/users/create', userData);
+            const res = await axios.post(`/api/users/${userData['userType']}/create`, userData);
             console.log(res.data);
             alert(`${userData['userType']} ${userData['name']} (${userData['email']}) added successfully!`)
         }
