@@ -9,11 +9,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
-    },
-    userType: {
-        type: String,
-        enum: ['student', 'teacher'],
-        required: true
     }
 }, {
     collection: 'accounts',
