@@ -5,36 +5,36 @@ import CreateUserForm from '../components/CreateUserForm';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-    const {isAuthenticated, user} = useAuth0();
-    const [isNewUser, setIsNewUser] = useState(false);
+    const {isAuthenticated, isLoading, user} = useAuth0();
+    const [isNewUser, setIsNewUser] = useState(Boolean);
     const navigate = useNavigate();
 
     useEffect(() => {
-        const checkUserExists = async () => {
-            try {
-                console.log(user?.email);
-                const res = await axios.get(`/api/users?email=${user?.email}`);
-                const doesUserExists = !!res.data.message;
-                setIsNewUser(!doesUserExists);
-                console.log(isNewUser);
-            }
-            catch (error) {
-                setIsNewUser(true);
-                console.log(isNewUser);
-                console.error(error);
-            }
-        }
-
         if (isAuthenticated) {
+            const checkUserExists = async () => {
+                try {
+                    const res = await axios.get(`/api/users?email=${user?.email}`);
+                    const doesUserExists = !!res.data.message;
+                    console.log("does user exist?", doesUserExists);
+                    setIsNewUser(!doesUserExists);
+                    if (!isNewUser) {
+                        navigate('/classrooms');
+                    }
+                }
+                catch (error) {
+                    setIsNewUser(true);
+                    console.error("User not found. Create user.", error);
+                }
+            }
+
             checkUserExists();
-            navigate('/classrooms');
         }
-    }, [isAuthenticated, user?.email]);
+    }, [isAuthenticated, isNewUser, navigate, user?.email]);
 
     const createUser = async (userData) => {
         try {
             console.log(userData);
-            const res = await axios.post('/api/users/create', userData);
+            const res = await axios.post(`/api/users/${userData['userType']}s/create`, userData);
             console.log(res.data);
             alert(`${userData['userType']} ${userData['name']} (${userData['email']}) added successfully!`);
             setIsNewUser(false);
@@ -46,17 +46,31 @@ const Login = () => {
 
     return (
         <>
-            {isNewUser ? 
-                    (
-                        <>
-                            <p>New user! Please fill out any incomplete information:</p>
-                            <CreateUserForm values={{email: user?.email, firstName: user?.given_name, lastName: user?.family_name}} onSubmit={createUser}/>
-                        </>
-                    ):
-                    (
-                        <p>Welcome, {user?.given_name}!</p>
-                    )
-            }
+        {isLoading ?
+        (
+            <>LOADING...</>
+        ):
+        (
+            <>{isAuthenticated ?
+                (
+                    <>{isNewUser ? 
+                        (
+                            <>
+                                <p>New user! Please fill out any incomplete information:</p>
+                                <CreateUserForm values={{email: user?.email, firstName: user?.given_name, lastName: user?.family_name}} onSubmit={createUser}/>
+                            </>
+                        ):
+                        (
+                            <p>Logging in...</p>
+                        )
+                    }</>
+                ) : 
+                (
+                    <>NOT AUTHENTICATED</>
+                )
+            }</>
+        )}
+        
         </>
     )
 }
