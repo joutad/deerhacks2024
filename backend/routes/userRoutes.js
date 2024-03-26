@@ -12,6 +12,8 @@ router.get('/:userId', UserController.getUser);
 
 router.get('', UserController.getUserByEmail);
 
+// router.get('/students/enrolledClasses', UserController.getEnrolledClasses);
+
 router.delete('/:userId', UserController.deleteUser);
 
 router.put('/:userId', UserController.updateUser);
