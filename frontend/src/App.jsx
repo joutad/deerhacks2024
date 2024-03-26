@@ -5,6 +5,7 @@ import Login from "./views/Login";
 import Register from "./views/Register";
 import NoPage from "./views/NoPage";
 import Classrooms from "./components/Classrooms";
+import CreateClassroom from "./components/CreateClassroom";
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/register" element={<Register/>}/>
                     <Route path="/classrooms" element={<Classrooms/>}/>
+                    <Route path="/createClassroom" element={<CreateClassroom/>}/>
                     <Route path="*" element={<NoPage />} />
                 </Route>
             </Routes>

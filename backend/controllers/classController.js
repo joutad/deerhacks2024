@@ -1,6 +1,6 @@
 const Class = require('../models/Class');
+const Teacher = require('../models/Teacher');
 
-// Controller functions
 exports.createClass = async (req, res) => {
     try {
         const { subject, code, number, name, description, teacher } = req.body;
@@ -23,4 +23,26 @@ exports.getAllClasses = async (req, res) => {
     }
 };
 
-// Add more controller functions as needed
+exports.getClass = async (req, res) => {
+    try {
+        // const {}//continue;
+        console.log(req.query);
+        const someClass = await Class.find({});
+        res.status(200).json(someClass);
+    } catch (error) {
+        console.error('Error getting class:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+}
+
+exports.taughtBy = async (req, res) => {
+    try {
+        const teacher = await Teacher.findOne( { email: req.query['teacher'] } );
+        const classes = await Class.find( { teacher } );
+        res.status(200).json(classes);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error. could not find teacher.' });
+    }
+}

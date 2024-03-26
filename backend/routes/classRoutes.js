@@ -2,10 +2,9 @@ const express = require('express');
 const router = express.Router();
 const classController = require('../controllers/classController');
 
-// Routes
 router.post('/create', classController.createClass);
 router.get('/all', classController.getAllClasses);
-
-// Add more routes as needed
+router.get('/class', classController.getClass);
+router.get('/taughtBy', classController.taughtBy);
 
 module.exports = router;
