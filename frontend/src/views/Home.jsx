@@ -1,9 +1,20 @@
-import React from 'react'
+import { useAuth0 } from '@auth0/auth0-react'
+import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 // import {styled} from 'styled-components';
 
 const Home = () => {
 
+    const { isAuthenticated } = useAuth0();
+    const navigate = useNavigate();
 
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/login');
+        }
+    
+    }, [isAuthenticated, navigate]);
+    
 
     return (
         <div>

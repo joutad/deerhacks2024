@@ -4,7 +4,7 @@ const classController = require('../controllers/classController');
 
 router.post('/create', classController.createClass);
 router.get('/all', classController.getAllClasses);
-router.get('/class', classController.getClass);
+router.get('/class/:classId', classController.getClass);
 router.get('/taughtBy', classController.taughtBy);
 
 module.exports = router;

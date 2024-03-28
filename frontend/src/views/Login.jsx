@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import CreateUserForm from '../components/CreateUserForm';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../components/UserContext';
 
 const Login = () => {
     const {isAuthenticated, isLoading, user} = useAuth0();
     const [isNewUser, setIsNewUser] = useState(Boolean);
+    const { setUserType, setAuthenticatedUser } = useUser();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -15,6 +17,8 @@ const Login = () => {
                 try {
                     const res = await axios.get(`/api/users?email=${user?.email}`);
                     const doesUserExists = !!res.data.message;
+                    setAuthenticatedUser(res.data.message);
+                    setUserType(res.data.message['userType']);
                     console.log("does user exist?", doesUserExists);
                     setIsNewUser(!doesUserExists);
                     if (!isNewUser) {
@@ -29,7 +33,7 @@ const Login = () => {
 
             checkUserExists();
         }
-    }, [isAuthenticated, isNewUser, navigate, user?.email]);
+    }, [isAuthenticated, isNewUser, navigate, user?.email, setUserType, setAuthenticatedUser]);
 
     const createUser = async (userData) => {
         try {
@@ -70,7 +74,7 @@ const Login = () => {
                 )
             }</>
         )}
-        
+ 
         </>
     )
 }
