@@ -20,7 +20,7 @@ const Layout = () => {
       <nav>
         <UL>
           <li>
-            <Link to="/">
+            <Link to={isAuthenticated ? "/" : "/"}>
                 <BUTTON>
                     Home
                 </BUTTON>

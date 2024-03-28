@@ -26,9 +26,10 @@ exports.getAllClasses = async (req, res) => {
 exports.getClass = async (req, res) => {
     try {
         // const {}//continue;
-        console.log(req.query);
-        const someClass = await Class.find({});
-        res.status(200).json(someClass);
+        const { classId } = req.params;
+        console.log(classId);
+        const someClass = await Class.findById(classId);
+        res.status(200).json({ message: someClass });
     } catch (error) {
         console.error('Error getting class:', error);
         res.status(500).json({ message: 'Server error' });

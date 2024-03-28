@@ -7,6 +7,11 @@ const studentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Class',
         required: false,
+    }],
+    classroomInvitations:  [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Class',
+        required: false,
     }]
 });
 

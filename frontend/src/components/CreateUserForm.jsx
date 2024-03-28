@@ -12,7 +12,7 @@ const CreateUserForm = ({ onSubmit, values }) => {
         event.preventDefault();
         const name = firstName + " " + lastName;
         console.log(name);
-        onSubmit({ name, email, userType });
+        onSubmit({ name, email, userType: userType });
     }
 
     useEffect(() => {

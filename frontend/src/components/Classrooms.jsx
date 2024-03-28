@@ -3,11 +3,13 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useUser } from './UserContext';
 
 const Classrooms = () => {
 
     const {user, isAuthenticated} = useAuth0();
-    const [userType, setUserType] = useState('');
+    // const [userType, setUserType] = useState('');
+    const { userType } = useUser();
     const [subjects, setSubjects] = useState([{}]);
 
     useEffect(() => {
@@ -15,9 +17,9 @@ const Classrooms = () => {
             const fetchUserDetails = async () => {
                 try {
                     const res = await axios.get(`/api/users?email=${user?.email}`);
-                    const userData = res.data.message['enrolledClasses'];
+                    // const userData = res.data.message['enrolledClasses'];
                     // console.log(userData);
-                    userData ? setUserType("student") : setUserType("teacher");
+                    // userData ? setUserType("student") : setUserType("teacher");
                     if (!user.name || !user.given_name || !user.family_name) {
                         user.name = res.data.message['name'];
                         const nameArr = user.name.split(" ");
@@ -66,14 +68,14 @@ const Classrooms = () => {
             {userType === 'teacher' ?
                 (
                     <Link to='/createClassroom'>
-                        <CreateClassButton userType={userType}>+ Create Classroom</CreateClassButton>
+                        <CreateClassButton>+ Create Classroom</CreateClassButton>
                     </Link>
                 ):
                 (
                     ""
                 )
             }
-            <H1><img width="32px" src={user?.picture} alt="profile" /> {user?.name} ({userType}){userType === 'student' ? `, Your teacher has invited you to...` : ``}</H1>
+            <H1><img width="32px" src={user?.picture} alt="profile" /> {user?.name} ({userType}){userType === 'student' ? `, Your teacher has invited you to...` : ``}&apos;s classes</H1>
             <center>
                 <UL>
                     {subjects.map(subject => (
@@ -82,7 +84,7 @@ const Classrooms = () => {
                             // key={subject._id}
                             >
                             <Link
-                            to={`/${subject._id}`} 
+                            to={`class/${subject._id}`} 
                             // to={`/${subject.subject}${subject.code}${subject.number}`}
                             >{subject.name}</Link>
                         </li>
